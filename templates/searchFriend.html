@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block body_contents %}
+<h2><center>Hi <a href = "{{ url_for('profile') }}">{{students_info[student]['name']}}</a></center></h2>
+<form method="POST" action="{{ url_for('logout') }}">
+    <input type="hidden" name="logout">
+    <input type="submit" value="logout" class="unswtalk_button">
+</form>
+
+<form method="POST" action="{{ url_for('searchFriend') }}"/>
+    Search friend:<input name="searchFor"><input type="submit" class="unswtalk_button" value="search">
+</form>
+
+<form method="POST" action="{{ url_for('posting') }}">
+    Post:<input type="text" name="post"><input type="submit" value="Post" class="unswtalk_button">
+</form>
+
+<form method="POST" action="{{ url_for('searchPost') }}">
+    Search post:<input type="text" name="searchPost"><input type="submit" value="Search" class="unswtalk_button">
+</form>
+
+
+
+<h3>Result for '{{keyword}}':</h3>
+
+{% for i in searchList %}
+    <li><a href="{{ url_for('otherProfile', zid=i) }}">{{students_info[i]['name']}}</a></li>
+    {% if students_info[i]['image'] %}
+<a href="{{ url_for('otherProfile', zid=i) }}"><img src="{{ students_info[i]['image'] }}" width="30" height="30"></a>
+    {% else %}
+<a href="{{ url_for('otherProfile', zid=i) }}">(No picture)</a>
+    {%endif%}
+</br></br>
+{%endfor%}
+{% endblock %}

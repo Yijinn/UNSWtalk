@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block body_contents %}
+<form method="POST" action="{{ url_for('logout') }}">
+    <input type="hidden" name="logout">
+    <input type="submit" value="logout" class="unswtalk_button">
+</form>
+<h2><center>Hi <a href = "{{ url_for('profile') }}">{{students_info[student]['name']}}</a></center></h2>
+
+
+
+<form method="POST" action="{{ url_for('searchFriend') }}"/>
+    Search friend:<input name="searchFor"><input type="submit" class="unswtalk_button" value="search">
+</form>
+
+<form method="POST" action="{{ url_for('posting') }}">
+    Post:<input type="text" name="post"><input type="submit" value="Post" class="unswtalk_button">
+</form>
+
+<form method="POST" action="{{ url_for('searchPost') }}">
+    Search post:<input type="text" name="searchPost"><input type="submit" value="Search" class="unswtalk_button">
+</form>
+
+<center><img src="{{ students_info[student]['image'] }}" width="300" height="250px" alt="No picture"></center>
+<p></p>
+<center><div class="unswtalk_user_details">
+Name:{{students_info[student]['name']}}
+Birthday:{{students_info[student]['birthday']}}
+Program:{{students_info[student]['program']}}
+
+</div></center>
+<br><b>Friend list:</b></br>
+{% for friend in students_info[student]['friends'] %}
+<li><a href= " {{ url_for('otherProfile', zid=friend) }}">{{students_info[friend]['name']}}</a></li>
+{% if students_info[friend]['image'] %}
+   <a href= "{{ url_for('otherProfile', zid=friend) }}"><img src="{{ students_info[friend]['image'] }}" width="30" height="30"></a>
+{%else%}
+(No picture)
+{%endif%}
+{%endfor%}
+
+<br>
+<br>
+</br>
+</br>
+
+
+
+
+
+<h3>Search for posts: '{{keyword}}'</h3>
+
+{% if posts %}
+{% for i in posts.keys() %}
+
+<ul class="list-unstyled">
+ <li><a href = "{{url_for('otherProfile', zid=posts[i]['who'])}}"><img src="{{students_info[posts[i]['who']]['image']}}" width="30" height="30" alt="">{{students_info[posts[i]['who']]['name']}}</a>   {{ posts[i]['time'] }}</li>
+    <p>{{posts[i]['message']}}</p>
+<form action="{{ url_for('comment', zid=posts[i]['who']) }}" method="POST">
+    <input type="hidden" name="path" value="{{i}}"><input name="comment" type="text"><input type="submit" value="comment" class="unswtalk_button">
+</form>
+    {% if posts[i]['comments'] %}
+        {%for comment in posts[i]['comments'].keys() %}
+<ul><li><a href = "{{ url_for('otherProfile', zid=posts[i]['comments'][comment]['who']) }}"><img src="{{students_info[posts[i]['comments'][comment]['who']]['image']}}" width="30" height="30" alt="">{{students_info[posts[i]['comments'][comment]['who']]['name']}}</a>  {{posts[i]['comments'][comment]['time']}}</li>
+<p>{{posts[i]['comments'][comment]['message']}}</p>
+
+<form action="{{ url_for('reply', zid=posts[i]['comments'][comment]['who']) }}" method="POST">
+    <input name="path" type="hidden" value="{{i}}"><input type="hidden" name="commentNumber" value="{{comment}}"><input name="reply" type="text"><input type="submit" value="reply" class="unswtalk_button">
+</form>
+
+            {%if posts[i]['comments'][comment]['replies'] %}
+                {% for reply in posts[i]['comments'][comment]['replies'].keys() %}
+        <ul><li><a href = "{{ url_for('otherProfile', zid=posts[i]['comments'][comment]['replies'][reply]['who']) }}"><img src="{{students_info[posts[i]['comments'][comment]['replies'][reply]['who']]['image']}}" width="30" height="30" alt="">{{students_info[posts[i]['comments'][comment]['replies'][reply]['who']]['name']}}</a>   {{posts[i]['comments'][comment]['replies'][reply]['time']}}</li>
+        <p>{{posts[i]['comments'][comment]['replies'][reply]['message']}}</p>
+
+        </ul>
+                {%endfor%}
+            {%endif%}
+            
+</ul>
+        {% endfor %}
+{%endif%}
+</ul>
+{% endfor %}
+
+{% endif %}
+{% endblock %}

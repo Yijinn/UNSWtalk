@@ -1,0 +1,25 @@
+
+
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">{{ posts[i]['time'] }}</h4>
+  <p></br>{{students_info[posts[i]['who']]['name']}}:
+    </br>{{posts[i]['message']}}</p>
+    {% if posts[i]['comments'] %}
+        {%for comment in posts[i]['comments'].keys() %}
+<hr>
+  <p class="mb-0">{{students_info[posts[i]['comments'][comment]['who']]['name']}}  {{posts[i]['comments'][comment]['time']}}
+</br>{{posts[i]['comments'][comment]['message'] }}</p>
+            {% if posts[i]['comments']['replies']%}
+                {%for reply in posts[i]['comments']['replies'].keys()%}
+<div class="card">
+  <div class="card-body">
+    eddwdw
+    {{posts[i]['comments'][reply]['message']}}
+  </div>
+</div>
+                {%endfor%}
+            {%endif%}
+
+        {% endfor %}
+    {% endif %}
+</div>

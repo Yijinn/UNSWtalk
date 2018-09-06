@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block body_contents %}
+<form method="POST" action="login">
+    <input type="hidden" name="login">
+    <center><input type="submit" value="login" class="unswtalk_button"></center>
+</form>
+<center><form method="POST" action="{{ student }}"></center>
+    <input type="hidden" name="n" value="7">
+    <center><input type="submit" value="browse" class="unswtalk_button"></center>
+</form>
+
+{% endblock %}
